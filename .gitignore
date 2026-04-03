@@ -1,3 +1,9 @@
 cc_rl_model_2.zip
 cc_rl_model.zip
+<<<<<<< HEAD
 history.npy
+=======
+history.npy
+.DS_Store
+__pycache__/env.cpython-310.pyc
+>>>>>>> d48128a05da800fffc350a7b890acf256d829e5a

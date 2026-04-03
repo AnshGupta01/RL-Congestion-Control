@@ -57,8 +57,13 @@ class CongestionEnv(gym.Env):
             self.history = []
 
         self.history.append((throughput, delay, reward))
+<<<<<<< HEAD
         print(f"Step {self.step_count} | CWND: {window} KB | Throughput: {throughput:.2f} Mbps | Delay: {delay:.2f} ms | Loss: {loss}")
         
+=======
+        
+
+>>>>>>> d48128a05da800fffc350a7b890acf256d829e5a
         return state, reward, False, False, {}
 
     def reset(self, seed=None, options=None):
@@ -108,4 +113,8 @@ class CongestionEnv(gym.Env):
 
 
 #iperf3 -c 10.0.0.1 -t 10    throughput
+<<<<<<< HEAD
 #ping -c 5 10.0.0.1     delay
+=======
+#ping -c 5 10.0.0.1     delay
+>>>>>>> d48128a05da800fffc350a7b890acf256d829e5a

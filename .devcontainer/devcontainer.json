@@ -1,0 +1,7 @@
+{
+	"name": "Miniconda",
+	"build": { 
+		"context": "..",
+		"dockerfile": "Dockerfile"
+	}
+}
