@@ -1,19 +1,34 @@
-FROM continuumio/miniconda3:latest
+FROM mcr.microsoft.com/devcontainers/python:3.11
 
-# Avoid interactive prompts
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Create env (optional) and install common libs
-RUN conda install -y \
-    python=3.11 \
+# System deps
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Python ML + Streamlit stack (M1 safe)
+RUN pip install --no-cache-dir \
     numpy \
     pandas \
     scipy \
     scikit-learn \
     matplotlib \
+    seaborn \
+    streamlit \
+    jupyter \
+    notebook \
     ipykernel \
-&& conda clean -afy
+    torch \
+    torchvision \
+    torchaudio
 
-# (Optional) set working dir and default command
 WORKDIR /workspace
-CMD ["python"]
+
+# Enable Jupyter kernel
+RUN python -m ipykernel install --user
+
+
+# streamlit run app.py --server.port 8501 --server.address 0.0.0.0

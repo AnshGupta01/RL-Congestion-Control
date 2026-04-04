@@ -1,143 +1,78 @@
-# RL Congestion Control
+<p align="center">
+  <img src="public/PacerRL-logo.png" width="90" style="border-radius: 16px;" />
+</p>
 
-A reinforcement learning prototype for congestion control using PPO (`stable-baselines3`) on a custom `gymnasium` environment.
+<h1 align="center">PacerRL</h1>
 
-The agent adjusts TCP window size and learns from:
-- Throughput from `iperf3`
-- Delay (RTT) from `ping`
+<p align="center">
+  <strong>Built for</strong><br/>
+  <a href="#" target="_blank">
+    <img src="https://img.icons8.com/color/48/artificial-intelligence.png" width="48" style="vertical-align: middle;" />
+    <br/>
+    <strong>Advanced Networking Research</strong>
+  </a>
+</p>
 
-## Project Structure
+<p align="center">
+  A modern, AI-driven congestion control framework designed to optimize TCP windowing for high-speed retail and enterprise networks.
+</p>
 
-- `env.py` - Custom RL environment (`CongestionEnv`)
-- `train.py` - PPO training script
-- `test_model.py` - Loads a trained model and prints throughput/delay stats
-- `plot.py` - Generates training metric plots from saved history
-- `history.npy` - Saved `(throughput, delay, reward)` samples
-- `plots/` - Output folder for generated plots
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white" alt="Python" />
+  <img src="https://img.shields.io/badge/Stable_Baselines3-PPO-FF6F00?logo=pytorch&logoColor=white" alt="SB3" />
+  <img src="https://img.shields.io/badge/Gymnasium-v1.x-00A99D?logo=openai&logoColor=white" alt="Gymnasium" />
+  <img src="https://img.shields.io/badge/Streamlit-Dashboard-FF4B4B?logo=streamlit&logoColor=white" alt="Streamlit" />
+  <img src="https://img.shields.io/badge/iperf3-Benchmark-000000?logo=linux&logoColor=white" alt="iperf3" />
+</p>
 
-## How It Works
+<p align="center">
+  <!-- Screenshot placeholder -->
+  <img src="" alt="PacerRL Dashboard Screenshot" width="100%" />
+</p>
 
-The environment action space is discrete:
-- `0` -> decrease window size
-- `1` -> keep same window size
-- `2` -> increase window size
+---
 
-Window sizes (KB): `[64, 128, 256, 512, 1024]`
+## 🏗️ Project Structure
 
-State (normalized):
-- Throughput / 50
-- Delay / 200
+- **`src/env.py`**: The core `PacerEnv` gymnasium environment. Supports both **Real Network** (iperf3) and **Simulation** modes.
+- **`dashboard.py`**: A premium Streamlit dashboard for real-time comparison between PacerRL and standard TCP (AIMD).
+- **`train_pacer.py`**: A clean CLI script for training new PacerRL models.
+- **`cc_ppo_optimized.zip`**: The latest trained PacerRL model.
 
-Reward:
-- `reward = norm_throughput - 0.5 * norm_delay`
+## 📊 Core Metrics
 
-## Requirements
+PacerRL optimizes for the "Golden Triangle" of networking:
+1.  **Throughput**: Maximize bits per second.
+2.  **Delay (RTT)**: Minimize bufferbloat and lag.
+3.  **Loss**: Maintain connection reliability.
+4.  **Efficiency Score**: A "Power" metric calculated as `Throughput / Delay`.
 
+## 🚀 Getting Started
+
+### 1. Prerequisites
+Ensure you have the following installed:
 - Python 3.9+
-- `iperf3` installed and accessible in PATH
-- `ping` available
-- Reachable test host at `10.0.0.1`
+- `iperf3` (for Real Network mode)
+- `ping` (for latency measurement)
 
-Python packages:
-- `stable-baselines3`
-- `gymnasium`
-- `numpy`
-- `matplotlib`
-
-## Setup
-
-1. Create and activate a virtual environment (recommended):
-
+### 2. Installation
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
+pip install stable-baselines3 gymnasium numpy pandas streamlit
 ```
 
-2. Install dependencies:
-
+### 3. Running the Dashboard
+The easiest way to see PacerRL in action:
 ```bash
-pip install stable-baselines3 gymnasium numpy matplotlib
+streamlit run dashboard.py
 ```
 
-3. Ensure network tools are installed:
+## 🛠️ Training PacerRL
 
+### Simulation Mode (Fast)
+Recommended for initial testing and demo preparation:
 ```bash
-# Debian/Ubuntu
-sudo apt update
-sudo apt install -y iperf3 iputils-ping
+python3 train_pacer.py --steps 50000 --mode sim --name my_pacer_model
 ```
 
-## Network Testbed Prerequisite
-
-This project expects an `iperf3` server running at `10.0.0.1`.
-
-On the server machine:
-
-```bash
-iperf3 -s
-```
-
-From the training machine, verify connectivity:
-
-```bash
-ping -c 3 10.0.0.1
-iperf3 -c 10.0.0.1 -t 1
-```
-
-## Training
-
-Run:
-
-```bash
-python train.py
-```
-
-This will:
-- Train PPO for `200` timesteps
-- Save history to `history.npy`
-- Save model to `cc_rl_model_2.zip`
-
-## Evaluate Trained Model
-
-Run:
-
-```bash
-python test_model.py
-```
-
-The script loads `cc_rl_model_2` and prints per-step:
-- Throughput
-- Delay
-- Loss (if available from parser)
-
-It also prints average throughput and delay.
-
-## Plot Results
-
-Run:
-
-```bash
-python plot.py
-```
-
-Generated files:
-- `plots/throughput.png`
-- `plots/delay.png`
-- `plots/reward.png`
-
-## Notes
-
-- Throughput and delay are normalized with fixed constants (`50 Mbps`, `200 ms`).
-- The current code uses a hardcoded endpoint (`10.0.0.1`) in both `iperf3` and `ping` calls.
-- If command outputs differ by OS/version, regex parsing in `env.py` may need adjustment.
-
-## Troubleshooting
-
-- `FileNotFoundError: iperf3`:
-  - Install `iperf3` and ensure it is in PATH.
-- Throughput always `0`:
-  - Check server IP, firewall rules, and that `iperf3 -s` is running.
-- Delay always `0`:
-  - Verify `ping` output format matches the regex in `get_delay()`.
-- Model load failure in `test_model.py`:
-  - Ensure training completed and `cc_rl_model_2.zip` exists.
+---
+Developed with ❤️ for Advanced Congestion Control Research

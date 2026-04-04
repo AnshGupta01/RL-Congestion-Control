@@ -1,7 +1,18 @@
 {
-	"name": "Miniconda",
-	"build": { 
-		"context": "..",
-		"dockerfile": "Dockerfile"
-	}
+  "name": "ML + Streamlit (M1)",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "settings": {
+    "python.defaultInterpreterPath": "/usr/local/bin/python",
+    "python.formatting.provider": "black"
+  },
+  "extensions": [
+    "ms-python.python",
+    "ms-toolsai.jupyter",
+    "ms-python.vscode-pylance"
+  ],
+  "forwardPorts": [8501, 8888],
+  "postCreateCommand": "pip install --upgrade pip",
+  "remoteUser": "vscode"
 }
