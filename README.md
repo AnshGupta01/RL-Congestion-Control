@@ -27,7 +27,7 @@
 
 <p align="center">
   <!-- Screenshot placeholder -->
-  <img src="" alt="PacerRL Dashboard Screenshot" width="100%" />
+  <img src="https://github.com/user-attachments/assets/645bfe07-82b0-4c7c-9ef7-d1fd72143f74" alt="PacerRL Dashboard Screenshot" width="100%" />
 </p>
 
 ---
